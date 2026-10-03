@@ -1,0 +1,54 @@
+class NodeList:
+    def __init__(self, key: int, value: int):
+        self.key = key
+        self.value = value
+        self.next = None
+
+class MyHashMap:
+
+    def __init__(self):
+        self.capacity = 10000
+        self.table = [NodeList(None, None) for _ in range(self.capacity)]
+
+    def put(self, key: int, value: int) -> None:
+        # Search for a already existing key
+        idx = key % self.capacity
+        cur = self.table[idx]
+
+        while cur.next:
+            if cur.next.key == key:
+                # if found -> substitute
+                cur.next.value = value
+                return
+            cur = cur.next
+        # else -> create a new node
+        cur.next = NodeList(key, value)        
+
+    def get(self, key: int) -> int:
+        idx = key % self.capacity
+        cur = self.table[idx]
+        
+        while cur.next:
+            if cur.next.key == key:
+                return cur.next.value
+            cur = cur.next
+        return -1
+        
+
+    def remove(self, key: int) -> None:
+        idx = key % self.capacity
+        cur = self.table[idx]
+
+        while cur.next:
+            if cur.next.key == key:
+                cur.next = cur.next.next
+                return
+            cur = cur.next
+        
+
+
+# Your MyHashMap object will be instantiated and called as such:
+# obj = MyHashMap()
+# obj.put(key,value)
+# param_2 = obj.get(key)
+# obj.remove(key)
